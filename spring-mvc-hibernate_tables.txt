@@ -1,0 +1,32 @@
+CREATE TABLE `Person` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL DEFAULT '',
+  `country` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `USER` (
+  `userId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `userCode` varchar(30) NOT NULL DEFAULT '',
+  `userName` varchar(90) DEFAULT NULL,
+  `userStatus` bool default true,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ROLE` (
+  `roleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `roleCode` varchar(30) NOT NULL DEFAULT '',
+  `roleName` varchar(90) DEFAULT NULL,
+  `roleDesc` varchar(90) DEFAULT NULL,
+  `roleStatus` bool DEFAULT true,
+  PRIMARY KEY (`roleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE  `imageTest`(
+  `img_id` int(10) unsigned NOT NULL auto_increment,
+  `img_title` varchar(45) NOT NULL,
+  `img_data` blob NOT NULL,
+  PRIMARY KEY  (`img_id`)
+);
