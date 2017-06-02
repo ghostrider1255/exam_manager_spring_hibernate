@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<annotation-driven />
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<!-- <resources mapping="/images/**" location="/images/" />
+	<resources mapping="/bootstrap/**" location="/bootstrap/" /> -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver" >
+		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+	</beans:bean>
+	
+	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>/WEB-INF/config/layouts.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<!-- <beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean> -->
+
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://localhost:3307/rajuDB" />
+		<beans:property name="username" value="raju" />
+		<beans:property name="password" value="raju" />
+	</beans:bean> 
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>com.javasree.spring.model.Person</beans:value>
+				<beans:value>com.javasree.spring.model.User</beans:value>
+				<beans:value>com.javasree.spring.model.MyImage</beans:value>
+				<beans:value>com.javasree.spring.model.Question</beans:value>
+				<beans:value>com.javasree.spring.model.Role</beans:value>
+				<beans:value>com.javasree.spring.model.Subject</beans:value>
+				<beans:value>com.javasree.spring.model.Exam</beans:value>
+				<beans:value>com.javasree.spring.model.ExamQuestion</beans:value>
+				<beans:value>com.javasree.spring.model.PaperPattern</beans:value>
+				<beans:value>com.javasree.spring.model.PatternSubjectRecord</beans:value>
+				<beans:value>com.javasree.spring.model.ResultPattern</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<!-- update, create -->
+				<beans:prop key="hibernate.hbm2ddl.auto">create</beans:prop>
+				<beans:prop key="hibernate.enable_lazy_load_no_trans">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="personDAO" class="com.javasree.spring.dao.impl.PersonDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="userDAO" class="com.javasree.spring.dao.impl.UserDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="imageDAO" class="com.javasree.spring.dao.impl.ImageDaoImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="subjectDAO" class="com.javasree.spring.dao.impl.SubjectDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="questionDAO" class="com.javasree.spring.dao.impl.QuestionDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="examDAO" class="com.javasree.spring.dao.impl.ExamDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="examQuestionDAO" class="com.javasree.spring.dao.impl.ExamQuestionDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="paperPatternDAO" class="com.javasree.spring.dao.impl.PaperPatternDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="patternSubjectRecordDAO" class="com.javasree.spring.dao.impl.PatternSubjectRecordDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="resultPatternDAO" class="com.javasree.spring.dao.impl.ResultPatternDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	
+	<beans:bean id="personService" class="com.javasree.spring.service.impl.PersonServiceImpl">
+		<beans:property name="personDAO" ref="personDAO"/>
+	</beans:bean>
+	<beans:bean id="userService" class="com.javasree.spring.service.impl.UserServiceImpl">
+		<beans:property name="userDAO" ref="userDAO"/>
+	</beans:bean>
+	<beans:bean id="imageService" class="com.javasree.spring.service.impl.ImageServiceImpl">
+		<beans:property name="imageDAO" ref="imageDAO"/>
+	</beans:bean>
+	<beans:bean id="subjectService" class="com.javasree.spring.service.impl.SubjectServiceImpl">
+		<beans:property name="subjectDAO" ref="subjectDAO"/>
+	</beans:bean>
+	<beans:bean id="questionService" class="com.javasree.spring.service.impl.QuestionServiceImpl">
+		<beans:property name="questionDAO" ref="questionDAO"/>
+	</beans:bean>
+	<beans:bean id="examService" class="com.javasree.spring.service.impl.ExamServiceImpl">
+		<beans:property name="examDAO" ref="examDAO"/>
+	</beans:bean>
+	<beans:bean id="examQuestionService" class="com.javasree.spring.service.impl.ExamQuestionServiceImpl">
+		<beans:property name="examQuestionDAO" ref="examQuestionDAO"/>
+	</beans:bean>
+	<beans:bean id="paperPatternService" class="com.javasree.spring.service.impl.PaperPatternServiceImpl">
+		<beans:property name="paperPatternDAO" ref="paperPatternDAO"/>
+	</beans:bean>
+	<beans:bean id="patternSubjectRecordService" class="com.javasree.spring.service.impl.PatternSubjectRecordServiceImpl">
+		<beans:property name="patternSubjectRecordDAO" ref="patternSubjectRecordDAO"/>
+	</beans:bean>
+	<beans:bean id="resultPatternService" class="com.javasree.spring.service.impl.ResultPatternServiceImpl">
+		<beans:property name="resultPatternDAO" ref="resultPatternDAO"/>
+	</beans:bean>
+
+	<context:component-scan base-package="com.javasree.spring" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+
+
+</beans:beans>
